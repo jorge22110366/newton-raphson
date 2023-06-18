@@ -25,4 +25,130 @@ Es importante destacar que el método de Newton-Raphson puede no converger si el
 DESARROLLADORES DEL PROGRAMA 
 JORGE ALEJANDRO MARTINEZ ALVAREZ DEL CASTILLO    22110366
 JOSE RAMON GONZALEZ MARTIN 22110361
+![image](https://github.com/jorge22110366/newton-raphson/assets/136780732/27fefdc5-65c0-425f-984d-eaab8fd1a668)
+CODIGO UTILIZADO 
+#include <iostream>
+#include <iomanip> 
+#include <cmath>
+
+#define PRECISION 10
+#define MAX_ITERACIONES 100
+#define INTERVALOS 6
+
+using namespace std;
+
+void tabula(double a, double b, int intervalos);	
+double f(double x);	
+double f_derivada(double x); 
+
+int main()
+{
+	double a;
+	double b;
+	double tolerancia;
+	double x0;
+	double x1; 
+	double error;
+	int iteracion; 
+	bool converge = true;
+	
+	cout << setprecision(PRECISION);	
+	cout << "\nCalculo de las raices de una funcion aplicando el metodo de Newton - Raphson\n";
+	cout << "\nIngrese el intervalo inicial [a,b]:" << endl;
+	
+	
+	cout << "\na = ";
+	cin >> a;
+	
+	cout << "b = ";
+	cin >> b;
+	
+	
+	tabula(a, b, INTERVALOS);
+	
+	
+	cout << "\nEscoja el punto inicial adecuado:   x0 = ";
+	cin >> x0;
+	
+	
+	cout << "Tolerancia = ";
+	cin >> tolerancia;
+	
+	
+	
+	
+	cout << "\nAproximacion inicial:\n";
+	cout << "x0 = " << x0 << "\n"
+		<< "f(x0) = " << f(x0) << "\n"
+		<< "f'(x0) = " << f_derivada(x0) << endl;
+	
+	iteracion = 1;
+	do {
+	
+		if (iteracion > MAX_ITERACIONES) {
+			converge = false;	
+			break;
+		
+		} else {
+			x1 = x0 - f(x0) / f_derivada(x0); 
+			error = fabs(x1 - x0);	
+			
+		
+			cout << "\nIteracion #" << iteracion << endl;
+			cout << "x" << iteracion << " = " << x1 << "\n"
+			  << "f(x" << iteracion << ") = " << f(x1) << "\n"
+			  << "f'(x" << iteracion << ") = " << f_derivada(x1) << "\n"
+			  << "error = " << error << endl;
+			
+		
+			if (error <= tolerancia) { 
+				converge = true;
+				break;
+				
+				
+			} else {
+				x0 = x1;
+				iteracion++;
+			}
+		}
+	
+	} while (1);
+	
+
+	if (converge) {
+		cout << "\n\nPara una tolerancia de " << tolerancia << " la raiz de f es: " << x1 << endl;
+	
+	} else {
+		cout << "\n\nSe sobrepasó la máxima cantidad de iteraciones permitidas" << endl;
+	}
+	
+	cin.get();
+	cin.get();
+	return 0;
+}
+
+void tabula(double x, double y, int intervalos)
+{
+	int puntos = intervalos + 1;
+	
+	double ancho = (y - x) / intervalos;
+	
+	cout << "\n\tx\t\tf(x) " << endl;
+	for (int i = 0; i < puntos; i++) {
+		cout << "\t" << x << "\t\t" << f(x) << endl;
+		x = x + ancho;
+	}
+}
+
+double f(double x)
+{
+	return pow(x, 5)-pow(x, 2)-9;
+	
+}
+
+double f_derivada(double x)
+{
+	return 5*pow(x, 4)-2*x;
+
+}
 
